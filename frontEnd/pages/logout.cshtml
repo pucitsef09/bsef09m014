@@ -1,0 +1,7 @@
+﻿@{
+     Session.Remove("username");
+  
+      WebSecurity.Logout();
+      Response.Redirect("~/frontEnd/pages/home.cshtml");
+      
+}

@@ -1,0 +1,20 @@
+﻿<div>
+   
+  <table border="1">
+      <tr>
+          <td>Name</td>
+          <td>Quantity</td>
+      </tr>
+      @{
+             var dbb = Database.Open("eshop");
+             foreach(var row in dbb.Query("SELECT * FROM products"))
+             {
+                 <tr> 
+                     <td>@row.prodName</td>
+                     <td>@row.quantity</td>
+                 </tr>
+             }
+           }
+  </table>    
+
+</div>

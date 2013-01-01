@@ -1,0 +1,51 @@
+﻿@{ 
+ 
+     var pageSize = 8; 
+     var totalPages = 0; 
+     var count = 0;
+     var page = UrlData[0].IsInt() ? UrlData[0].AsInt() : 1;
+     var offset = (page -1) * pageSize;
+ 
+     var db = Database.Open("edata");
+     var sql = "Select Count(*) From Categories";
+     count = (int)db.QueryValue(sql);
+     
+     totalPages = (int) Math.Ceiling((double)count/(double)pageSize) ;        
+     
+     
+    sql = "Select * from categories Order by catId OFFSET @0 ROWS FETCH NEXT @1 ROWS  ONLY";
+           var result = db.Query(sql, offset, pageSize);
+      
+         /*for(int k=0;k<count;k++)
+          {       <p>@pageCollection[k]</p>}*/
+ 
+        
+} 
+
+<div style="height: 500px">
+    <h2 style="font-family: Verdana;color: #0094ff">Categories</h2>
+    <table border="1" style="margin-left:300px;font-family: Verdana;font-size: 16px;border-spacing: 0px;border-style: outset">
+     <tr style="height: 37px">
+          <th style="background-image: url(/adminPanel/images/tHeader.jpg);color: white" >Category name</th>
+          <th style="background-image: url(/adminPanel/images/tHeader.jpg);color: white">Delete</th> 
+          <th style="background-image: url(/adminPanel/images/tHeader.jpg);color: white">Edit</th> 
+          <th style="background-image: url(/adminPanel/images/tHeader.jpg);color: white"><input type="checkbox"/></th> 
+     </tr>
+   @foreach(var row in result){
+             <tr style="height: 37px">
+                 <td style="width: 250px">@row.catName</td>
+                 <td style="width: 70px"><img src="/adminPanel/images/icon1.gif" style="margin-left: 25px"/></td>
+                 <td style="width: 70px"><img src="/adminPanel/images/icon2.gif" style="margin-left: 25px"/></td>
+                 <td style="width: 70px"><input type="checkbox" style="margin-left: 25px"/></td>
+             </tr>           
+        }
+   </table>
+    <br/>
+    <br/>
+
+         <span style="margin-left: 450px"></span>
+       @for (var i = 1; i < totalPages + 1; i++){
+         <a href="/adminPanel/pages/categories/cat/@i">@i</a>
+
+    }   
+</div>

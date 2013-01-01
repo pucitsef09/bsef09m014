@@ -1,0 +1,104 @@
+﻿@{ 
+    Validation.RequireField("proname","Cannot be empty");
+    Validation.RequireField("quan","Cannot be empty");
+    Validation.RequireField("price","Cannot be empty");
+    Validation.Add("quan", Validator.Integer("Quantity must be an integer"));
+    Validation.Add("price", Validator.Integer("price must be an integer"));
+  
+   
+
+    WebImage photo = null;
+    var newFileName = "";
+    var imagePath = "";
+    var path="";
+
+    if(IsPost)
+    {
+         if(Validation.IsValid())
+         {
+           
+           photo = WebImage.GetImageFromRequest();
+           if(photo != null)
+           {
+                newFileName =    Path.GetFileName(photo.FileName);
+                imagePath = @"adminPanel\pages\products\pImages\" + newFileName;
+                photo.Save(@"~\" + imagePath);
+                path ="~/adminPanel/pages/products/pImages/"+ newFileName;
+          
+                var catId = Request.Form["cId"];
+                var name = Request.Form["proname"];
+                var quantity = Request.Form["quan"].AsInt();
+                var price = Request.Form["price"];
+                var description =  Request["txt1"];
+                if(ModelState.IsValid)
+                {
+                    var db = Database.Open("edata");
+                    var insertquery = "Insert into products(prodName,prodpath, catId , quantity , price , description)" + "values (@0,@1,@2,@3,@4,@5)";
+                    db.Execute(insertquery, name, path , catId , quantity, price, description);
+                }          
+             }   
+             else
+             {
+                 <p style="color:red">* Please first select an image</p>
+             }
+         }
+    }
+ 
+} 
+<div style="border: 1px solid #BBBBBB;margin: 50px 200px 50px 200px;font-family: Calibri;font-size: 18px">
+<form action="" enctype="multipart/form-data" method="post" style="margin-left: 200px">
+    
+    <table style="border-spacing: 20px">
+        <tr>
+            
+            <td colspan="3"><h3>Please provide following information.</h3></td>
+            
+        </tr>
+        <tr>
+            <td>Select Category</td>
+            <td><select name="cId" style="width: 250px">
+                 @{
+                     var dbb = Database.Open("edata");
+                     foreach(var row in dbb.Query("SELECT * FROM categories")){
+                     <option value="@row.catId"> @row.catName</option>
+                     }
+                  }
+                </select>
+            </td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>Name</td>
+            <td><input type="text" name="proname" style="width: 250px"/></td>
+            <td style="color: red">@Html.ValidationMessage("proname")</td>
+        </tr>
+        <tr>
+            <td>Upload Pic</td>
+            <td><input type="file" name="Image" style="width: 250px"/></td>
+            <td style="color: red">@Html.ValidationMessage("Image")</td>
+        </tr>
+        <tr>
+            <td>Quantity</td>
+            <td><input type="text" name="quan" style="width: 250px"/></td>
+            <td style="color: red">@Html.ValidationMessage("quan")</td>
+        </tr>
+        <tr>
+            <td>Price</td>
+            <td><input type="text" name="price" style="width: 250px"/></td>
+            <td style="color: red">@Html.ValidationMessage("price")</td>
+        </tr>
+        <tr>
+            <td>Description</td>
+            <td><textarea name="txt1" rows="15" cols="28"></textarea></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><input type="submit" value="add product"/></td>
+            <td></td>
+        </tr>
+
+    </table>
+
+</form>
+</div>

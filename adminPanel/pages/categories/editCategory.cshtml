@@ -1,0 +1,52 @@
+﻿@{
+    string name =Request["name"];
+      Validation.RequireField("name", "* Name cannot be empty");
+      var db = Database.Open("edata");
+      var catId = UrlData[0];
+  
+      var cat = db.QuerySingle("SELECT * FROM categories WHERE catId =@0", catId);
+    
+    if(IsPost)
+    {
+       if(Validation.IsValid())
+          {
+             
+               var dbb = Database.Open("edata");
+               var query = "UPDATE categories SET catName ="+ "'"+ @name+"'"+ "WHERE catId =@0 ";
+               dbb.Execute(query , catId);
+
+               Response.Redirect("~/adminPanel/pages/manageCategories");
+
+          } 
+    }
+}
+<div>
+    <form action="" method="post">
+         Category Name: <input type="text" value="@cat.catName" disabled="disabled"/>
+
+        <table>
+            <tr>
+                <td>
+                   New Name
+                </td>
+                <td>
+                    <input type="text" name="name" value="@Request["name"]"/>
+                </td>
+                <td>
+                    @Html.ValidationMessage("name")
+                </td>
+            </tr>
+            <tr>
+                <td>
+                </td>
+                <td>
+                   <input type="submit" value="Change"/>    
+                </td>
+                <td>
+                   
+                </td>
+               
+            </tr>
+        </table>
+    </form>
+</div>

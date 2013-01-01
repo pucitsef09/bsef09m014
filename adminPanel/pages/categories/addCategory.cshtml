@@ -1,0 +1,43 @@
+﻿@{
+      Validation.RequireField("Cname","*Name cannot be empty");
+   
+        if (IsPost)
+        {
+          if(Validation.IsValid())
+          {
+              var catname = Request.Form["Cname"];
+              
+                if(ModelState.IsValid)
+                {
+                    var db = Database.Open("edata");
+                    var insertquery = "Insert into categories(catName)" + "values (@0)";
+                    db.Execute(insertquery,catname);
+                     Response.Redirect("~/adminPanel/pages/manageCategories");
+                }             
+          }
+
+
+        }
+      }
+ 
+<div style="height: 410px">
+     <h1 style="color: #0094ff;margin-left: 300px;margin-top: 30px;font-family: Calibri">Add Category</h1>
+     <form action="" method="post" style="margin-left: 400px;border: 1px solid #BBBBBB;font-size: 20px;width:600px;height: auto">
+         <table style="border-spacing: 30px">
+              <tr>
+                  <td style="font-family: Calibri;font-size: 25px">Name</td>
+                  <td><input type="text" name="Cname" style="height: 30px;width: 250px"/></td>
+                  <td><span style="color: red;font-family: Calibri;font-size: 16px">@Html.ValidationMessage("Cname")</span></td>
+              </tr>
+              <tr>
+                  <td></td>
+                  <td><input type="submit" style="height: 50px;width: 100px" value="Add"></td>
+                  <td></td>
+              </tr>
+         </table>
+       
+     </form>
+
+</div>
+
+

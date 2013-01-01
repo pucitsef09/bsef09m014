@@ -1,0 +1,55 @@
+﻿@{
+      int quantity = 1;
+      var db = Database.Open("edata");
+      var ProductId = UrlData[0];
+   
+      var prod = db.QuerySingle("SELECT * FROM products WHERE prodId = @0", ProductId);
+      var prodId = prod.prodId;
+      var Name=prod.prodName;
+      var path=(prod.prodPath).Substring(1,(prod.prodPath).Length-1 );
+      var Price=prod.price;
+      var Desc=prod.description;
+      var quan = prod.quantity;
+      if(IsPost)
+      {
+         quantity = Convert.ToInt32(Request["quan"]) ;
+      }
+}
+<!--Product Details page-->
+<div>
+    <div style="border: 0px solid #BBBBBB;margin-left: 55px;margin-top: 50px;font-family: Calibri;width: 300px;float: left;border-style: dashed">
+        <!--helper function for displaying the product details-->
+         @helpers.productDetails(Name,path,Price,Desc)
+    </div>
+    <div style="float: right">
+    
+        <!--adding product to cart-->
+           <fieldset style="margin: 40px 40px 40px 40px;font-family: Calibri;font-size: 20px;color: green;width: 520px">
+                    <legend style="font-family: Calibri;font-size: 25px;">Place Order</legend>
+                    <p>
+                         Default Quantity is 1. 
+                         If you want just one piece,
+                         you can simply leave the 
+                         field required below.
+                         Change quanitity if you
+                         want more than 1.
+                    </p>
+                
+                    <form action="" method="post">
+                         Quantity : <input type="text" name="quan" value="@Request["quan"]"/>  
+                        <input type="submit" value="select Quantity"/>   
+                    </form>
+                    <a href=@Href("~/frontEnd/pages/cart.cshtml",prodId,Name,Price,quantity) style="margin-left: 20px"><img src="~/frontEnd/images/aa.png" height="40px" width="170px"/></a>
+                     <a href="~/frontEnd/pages/viewCart.cshtml" style="margin-left: 10px"><img src="~/frontEnd/images/v.png" height="40px" width="170px"/></a>
+              
+            </fieldset>
+             <!--Integrating social networking feature-->
+             <div>
+                @Facebook.LikeButton("http://www.facebook.com/step.friends",
+                           width:230,
+                           buttonLayout:"standard",
+                           height:25,
+                           showFaces:false)
+             </div>
+     </div>
+</div>   

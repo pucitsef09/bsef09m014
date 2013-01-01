@@ -1,0 +1,25 @@
+﻿@{
+    //adding items to cart
+     int id = Convert.ToInt32(UrlData[0]);
+     string name = UrlData[1];
+     string price =UrlData[2];
+     int quantity =Convert.ToInt32( UrlData[3]);
+        if(Session["username"]==null)
+        {
+            <h1>Kindly First Login. then you will be able to select items</h1>
+            Response.Redirect("~/frontEnd/pages/login.cshtml");
+        }
+    else
+    {
+        Cart c = (Cart) Session["obj"];
+        c.prodId.Add(id);
+        c.prodPrice.Add(price);
+        c.prodQuantity.Add(quantity);
+        c.prodName.Add(name);
+
+        Session["obj"] = c;
+
+        Response.Redirect("~/frontEnd/pages/userPage.cshtml");
+    }
+    
+}

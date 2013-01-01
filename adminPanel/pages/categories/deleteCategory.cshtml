@@ -1,0 +1,13 @@
+﻿@{
+      var db = Database.Open("edata");
+      var catId = UrlData[0];
+
+      var cat = db.QuerySingle("Delete FROM products WHERE catId = @0", catId);
+      cat = db.QuerySingle("Delete FROM categories WHERE catId = @0", catId);
+       
+      Response.Redirect("~/adminPanel/pages/manageCategories");    
+}
+
+
+
+

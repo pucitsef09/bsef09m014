@@ -1,0 +1,92 @@
+﻿@{
+      Validation.RequireField("uname","*Enter userName");
+      Validation.RequireField("dob","*Enter DOB");
+      Validation.RequireField("age","*Enter age");
+      Validation.RequireField("email","*Enter Email Id");
+      Validation.RequireField("password","*Enter Password");
+      Validation.Add("age", Validator.StringLength(3));
+      Validation.Add("age", Validator.Integer("*Age must be an integer"));
+      Validation.Add("email",Validator.Regex(@"^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$" ,"*Invalid Email Address"));
+   
+       Validation.Add("password", Validator.StringLength(20));
+   
+        if (IsPost)
+        {
+          if(Validation.IsValid())
+          {
+              var username = Request.Form["uname"];
+             
+              var dob = Request.Form["dob"];
+              var age = Request.Form["age"];
+              var gender = Request.Form["gen"];
+              var email = Request.Form["email"];
+              var password = Request.Form["password"];
+
+              if(ModelState.IsValid)
+              {
+                WebSecurity.CreateUserAndAccount(username, password, null, false);
+
+                var db = Database.Open("edata");
+                var insertquery = "Insert into userprofile(userName,emailAddress, dob , age , gender)" + "values (@0,@1,@2,@3,@4)";
+                db.Execute(insertquery, username, email, dob , age, gender);
+              }
+
+          }
+}
+}
+<div>
+    <h1 style="margin-top: 20px;margin-left: 50px;color: #0094ff">Registration Form</h1>
+    <form id="rgstrn" action="" method="post" style="height: auto;width:600px;border: 1px solid #BBBBBB;margin-left: 50px;margin-top: 20px">         
+     
+        <table border="0" style="width:auto" style="margin-top: 50px">
+            <!--usrname-->
+            <tr style="height: 30px">
+                <td style="text-align: right">User Name</td>
+                <td><input type="text" name="uname" style="height: 30px;width: 250px;margin-left: 10px" value="@Request["uname"]"/></td>
+                <td style="width: auto"><span style="font-family: Calibri; color: #218416; text-align: center"> @Html.ValidationMessage("uname")</span> </td>
+            </tr>
+            <!--dob-->
+            <tr style="height: 30px">
+                <td style="text-align: right">Date of birth (day/month/year)</td>
+                <td><input type="text" name="dob" style="height: 30px;width: 250px;margin-left: 10px" value="@Request["dob"]"/></td>
+                <td><span style="font-family: Calibri; color: #218416; text-align: center">@Html.ValidationMessage("dob")</span> </td>
+            </tr>
+            <!--Age-->
+
+            <tr style="height: 30px">
+                <td style="text-align: right">Age</td>
+                <td><input type="text" name="age" style="height: 30px;width: 250px;margin-left: 10px" value="@Request["age"]"/></td>
+                <td><span style="font-family: Calibri; color: #218416; text-align: center">@Html.ValidationMessage("age")</span> </td>
+            </tr>
+
+            <!--Gender-->
+            <tr style="height: 30px">
+                <td style="text-align: right">Gender</td>
+                <td><input type="radio" name="gen" checked="checked" value="male"/>Male
+                    <input type="radio" name="gen" value="female" />Female      
+                </td>
+                <td></td>
+            </tr>
+            <!--Email Id-->
+            <tr style="height: 30px">
+                <td style="text-align: right">Email Id</td>
+                <td><input type="text" name="email" style="height: 30px;width: 250px;margin-left: 10px" value="@Request["email"]"/></td>
+                <td><span style="font-family: Calibri; color: #218416; text-align: center">@Html.ValidationMessage("email")</span> </td>
+            </tr>
+            <!--Password-->
+            <tr style="height: 30px">
+                <td style="text-align: right">Password</td>
+                <td><input type="password" name="password" style="height: 30px;width: 250px;margin-left: 10px" value="@Request["password"]"/></td>
+                <td><span style="font-family: Calibri; color: #218416; text-align: center">@Html.ValidationMessage("password")</span> </td>
+            </tr>
+        
+            <tr style="height: 30px">
+                <td colspan="3"><input type="submit" value="Register" style="height: 40px;width: 150px;margin-left: 150px"/></td>
+                
+            </tr>
+        </table>
+     </form>
+
+</div>
+
+

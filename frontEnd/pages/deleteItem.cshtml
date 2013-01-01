@@ -1,0 +1,24 @@
+﻿@{
+    //deleting product from cart
+    int prodId = Convert.ToInt32(UrlData[0]) ;
+    Cart c = (Cart) Session["obj"];
+    Cart c2 = new Cart();
+    int count = c.prodId.Count;
+    <p>@count</p>
+    int no=0;
+    for(int i=0;i<count;i++)
+    {
+        if(c.prodId[i] == prodId)
+        {
+            continue;
+        }
+        c2.prodId.Add( c.prodId[i]);
+        c2.prodName.Add(c.prodName[i]);
+        c2.prodPrice.Add(c.prodPrice[i]);
+        c2.prodQuantity.Add(c.prodQuantity[i]);
+        no++;
+    }
+         
+    Session["obj"] =c2;
+    Response.Redirect("~/frontEnd/pages/viewCart.cshtml");
+}

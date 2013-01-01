@@ -1,0 +1,47 @@
+﻿@{ 
+     var pageSize = 6; 
+     var totalPages = 0; 
+     var count = 0;
+     var page = UrlData[0].IsInt() ? UrlData[0].AsInt() : 1;
+     var offset = (page -1) * pageSize;
+     var cateid = UrlData[0];
+     <p>@cateid</p>
+     var db = Database.Open("edata");
+     var sql = "Select * From products where catId =@0";
+     db.Query(sql, cateid);
+     
+     totalPages = (int) Math.Ceiling((double)count/(double)pageSize) ;        
+     sql = "Select * from products where catId ="+ cateid+"Order by prodId OFFSET @0 ROWS FETCH NEXT @1 ROWS  ONLY";
+           var result = db.Query(sql, offset, pageSize);
+      
+         /*for(int k=0;k<count;k++)
+          {       <p>@pageCollection[k]</p>}*/
+ 
+        
+} 
+
+
+    <div id="d1" style="float: left;margin-left:7px; border: 0px solid #BBBBBB;width: 45%" >
+        <h3 style="color:#000;margin-left: 2% ;font-family: 'Comic Sans MS'; font-weight: bold">Products</h3>
+
+         <p>@result</p>
+       @foreach(var row in result){
+        
+           string sub = (@row.prodPath).Substring(1,(@row.prodPath).Length-1 );
+        
+           <div  style="border:1px solid #BBBBBB;height: 150px;width: 150px;float: left;margin-left: 7px;margin-top: 10px;"> 
+                <a href="@sub"><img src="@sub" alt="no img" height="120" width="100%"/></a>
+                <div style="padding-top: 4px;padding-left: 12px;font-family: Calibri;font-size: 18px">  
+                    <span><a href=@Href("~/frontEnd/pages/productDetails.cshtml", @row.prodId)>@row.prodName</a></span>
+                    <span style="margin-left: 10px;color: green;font-size: 16px"> @row.price </span>
+                </div>
+           </div>
+        }
+        <span style="margin-left: 200px"></span>
+       @for (var i = 1; i < totalPages + 1; i++){
+         <a href="/frontEnd/pages/home/@i">@i</a>
+
+    }   
+    
+    </div>
+    

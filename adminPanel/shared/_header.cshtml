@@ -1,0 +1,48 @@
+﻿<div style="background-image: url(/adminPanel/images/top_bg.jpg);height: 100px;width: 100%">
+
+    <div id="div1" style="float: left">
+        <img src="~/adminPanel/images/logo.png" height="90px" width="220px" style="margin-left: 30px"/>
+    </div>
+
+    <div id="div2" style="float:right;width:400px;height:98px;border: 0px solid green">
+        <form action="~/adminPanel/pages/search.cshtml" method="post" style="margin-top: 60px;margin-right: 20px;margin-bottom: 0px;color: white;font-family: Verdana;font-size: 16px">
+
+            @Html.TextBox("searchTerm")
+            <input type="Submit" value="Search" />
+
+        </form>
+    </div> <!--div 2 ending-->
+</div>
+<div id="navigation" style="height: 40px;width: 100%;background-image: url(/adminPanel/images/nBg.jpg)">
+
+    <div id="d1" style="height: 100%;width: 90px;padding-top: 10px;float: left">
+           <a href="~/adminPanel/pages/dashboard.cshtml" style="color: white;font-family: Verdana;font-size: 13px;font-weight: bold;margin-left:40px">Dashboard</a> 
+     
+     </div>
+
+    <img src="/adminPanel/images/divider.jpg" height="100%" style="float: left;margin-left: 30px" />
+
+    <div id="d2" style="height: 100%;width: 95px;padding-top: 10px;float: left">
+           <a href="~/adminPanel/pages/manageCategories.cshtml" style="color: white;font-family: Verdana;font-size: 13px;font-weight: bold;margin-left:40px">Categories</a> 
+     
+     </div>
+
+    <img src="/adminPanel/images/divider.jpg" height="100%" style="float: left;margin-left: 30px" />
+
+    <div id="d3" style="height: 100%;width: 95px;padding-top: 10px;float: left">
+           <a href="~/adminPanel/pages/manageProducts.cshtml" style="color: white;font-family: Verdana;font-size: 13px;font-weight: bold;margin-left:40px">Products</a> 
+     
+     </div>
+
+    <div id="d3" style="height: 100%;width: 125px;padding-top: 10px;float: left;margin-left: 530px">
+     
+     </div>
+
+    <img src="/adminPanel/images/divider.jpg" height="100%" style="float: left;margin-left: 30px" />
+
+    <div id="d4" style="height: 100%;width: 95px;padding-top: 10px;float: left">
+           <a href="~/adminPanel/pages/alogout.cshtml" style="color: white;font-family: Verdana;font-size: 13px;font-weight: bold;margin-left:40px">Logout</a> 
+     
+     </div>
+
+</div>

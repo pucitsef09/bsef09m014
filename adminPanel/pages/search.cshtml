@@ -1,0 +1,25 @@
+﻿@{
+    //searching products
+    var db = Database.Open("edata");
+    var searchWords = Request["searchTerm"].Split(' ');
+    IEnumerable<dynamic> result = Enumerable.Empty<string>();
+    var sqlSelect = "SELECT prodId, prodName FROM Products WHERE " +
+    "prodName LIKE @0 OR description LIKE @0";
+    foreach(var word in searchWords)
+    {
+       result = result.Concat(db.Query(sqlSelect, "%" + word + "%").ToList());
+    }
+}
+
+<div style="margin: 10px 300px 50px 300px;border: 1px solid #BBBBBB;padding-left: 60px;font-size: 20px">
+    <h1 style="margin-top: 20px;font-family: Calibri">Search Results</h1>
+    <p>@result.Count() products found matching: <em>@Request["searchTerm"]</em></p>
+    <ul id="searchResult">
+    @foreach (var item in result)
+    {
+        <li>
+            <a href=@Href("~/adminPanel/pages/detailsPage.cshtml",@item.prodId)>@item.prodName</a>
+        </li>
+    }
+    </ul>
+</div>

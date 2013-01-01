@@ -1,0 +1,117 @@
+﻿@{
+      var db = Database.Open("edata");
+      var prodId = UrlData[0];
+      var cat = db.QuerySingle("SELECT * FROM products WHERE prodId =@0", prodId);
+      <h3 style="margin-left: 10px;margin-top: 10px">Product : <span style="color: red;font-size: 20px">@cat.prodName</span></h3>
+      <h3 style="margin-left:60px">Enter values to fields which you want to change. In else case, simple leave</h3>
+     
+       WebImage photo = null;
+        var newFileName = "";
+        var imagePath = "";
+        var path="";
+
+     if(IsPost){
+           var flag = 0;
+           var pn = Request["proname"];
+           photo = WebImage.GetImageFromRequest();
+           var q = Request["quan"];
+           var p = Request["price"];
+           var d = Request["txt1"];
+           var catId = Request.Form["cId"];
+ 
+           if(pn=="")
+           {
+               pn = cat.prodName;
+           }
+
+           if(q=="")
+           {
+               q = cat.quantity;
+           }
+           if(p=="")
+           {
+               p= cat.price;
+           }
+            if(d=="")
+           {
+               d = cat.description;
+           }
+         
+           if(photo != null)
+           {
+                    newFileName =    Path.GetFileName(photo.FileName);
+                    imagePath = @"adminPanel\pages\products\pImages\" + newFileName;
+                    photo.Save(@"~\" + imagePath);
+                    path ="~/adminPanel/pages/products/pImages/"+ newFileName;
+           }
+           else
+           {
+               path = cat.prodPath;       
+           }
+          
+           if(ModelState.IsValid)
+                {
+                  var dbb = Database.Open("edata");
+                  var sqlUpdate = "UPDATE products SET prodName=@0,prodpath=@1, catId=@2 , quantity=@3 , price=@4 , description=@5 where prodId=@6";
+                  dbb.Execute(sqlUpdate, pn, path, catId, q, p, d, prodId); 
+               
+                }   
+
+    }
+       
+}
+
+
+<div style="border: 1px solid #BBBBBB;margin: 50px 200px 50px 200px;font-family: Calibri;font-size: 18px">
+<form action="" enctype="multipart/form-data" method="post" style="margin-left: 200px">
+    
+   <table style="border-spacing: 20px">
+        
+        <tr>
+            <td>Select Category</td>
+            <td><select name="cId" style="width: 250px">
+                 @{
+                     var dbbb = Database.Open("edata");
+                     foreach(var row in dbbb.Query("SELECT * FROM categories")){
+                     <option value="@row.catId"> @row.catName</option>
+                     }
+                  }
+                </select>
+            </td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>Name</td>
+            <td><input type="text" name="proname" style="width: 250px"/></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>Upload Pic</td>
+            <td><input type="file" name="Image" style="width: 250px"/></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>Quantity</td>
+            <td><input type="text" name="quan" style="width: 250px"/></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>Price</td>
+            <td><input type="text" name="price" style="width: 250px"/></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>Description</td>
+            <td><textarea name="txt1" rows="15" cols="28"></textarea></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><input type="submit" value="Change"/></td>
+            <td></td>
+        </tr>
+
+    </table>
+</form>
+</div>
+

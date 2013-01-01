@@ -1,0 +1,47 @@
+﻿@{
+        int count=0;
+        Cart c =new Cart();
+        if(Session["username"]==null)
+        {
+            <h1>Kindly First Login. then you will be able to select items</h1>
+            Response.Redirect("~/frontEnd/pages/login.cshtml");
+        }
+        else
+        {
+           c =(Cart) Session["obj"];
+           count = c.prodId.Count;
+      
+        } 
+    
+}
+<!--View cart-->
+<a href="~/frontEnd/pages/logout.cshtml" style="margin-left: 1000px">Logout</a>
+<div style="border: 0px solid #BBBBBB">
+    <div>
+    <table id="tb" border="1" style="border-style: solid;margin-left: 60px;margin-top: 30px;border-spacing: 0px">
+       <tr>
+           <th style="width: 182px">Product Name</th>
+           <th style="width: 182px">Product Price</th>
+           <th style="width: 185px">Quantity</th>
+           <th style="width: 185px">Delete</th>
+
+       </tr>    
+       <!--Dsiplaying items in cart-->
+       @for(int i=0;i<count;i++)
+       {
+           <tr style="text-align: center">
+               <td> @c.prodName[i]</td>
+               <td>@c.prodPrice[i]</td>
+               <td>@c.prodQuantity[i]</td>
+               <td><a href=@Href("~/frontEnd/pages/deleteItem.cshtml", @c.prodId[i])><img src="/adminPanel/images/icon1.gif"/></a></td>
+           </tr>
+       }
+    </table>
+    </div>
+    <div style="margin-top:20px">
+        <a href="~/frontEnd/pages/checkout.cshtml" style="margin-left: 400px"><img src="~/frontEnd/images/chnow.png" height="60px" width="200px"/></a>
+
+
+        <a href="~/frontEnd/pages/home.cshtml" style="margin-left: 10px"><img src="~/frontEnd/images/letsshop.png" height="60px" width="200px"/></a>
+     </div>
+</div>

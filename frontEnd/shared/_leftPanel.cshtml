@@ -1,0 +1,9 @@
+﻿<h3 style="color:#000;margin-left: 10% ;font-family: 'Comic Sans MS';"><i>Categories</i></h3>
+<ul id="lpl">
+@{
+      var dbb = Database.Open("edata");
+        foreach(var row in dbb.Query("SELECT * FROM categories")){
+        <li class="lpli"><a href=@Href("~/frontEnd/pages/selectedCategory.cshtml",@row.catId)>@row.catName</a></li>
+    }
+}
+</ul>

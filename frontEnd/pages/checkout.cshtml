@@ -1,0 +1,69 @@
+﻿@{     
+    Cart c =(Cart) Session["obj"];
+    int count = c.prodId.Count;
+
+    if(count==0)
+    {
+        Response.Redirect("~/frontEnd/pages/userPage.cshtml");
+    }
+    int total =0;
+    for(int i=0;i<count;i++)
+    {
+        total+= (Convert.ToInt32(c.prodPrice[i])*c.prodQuantity[i]);
+    }
+
+    int ct = 0;
+}
+
+<!--CheckOut-->
+<!--Integrated with paypal-->
+<a href="~/frontEnd/pages/logout.cshtml" style="margin-left: 1000px">Logout</a>
+<h1 style="margin-left:20px">Order Details</h1> 
+<div style="border: 1px solid black;margin-top:10px;margin-left: 60px;height: auto;width: 600px">
+<table>
+    <tr><td >
+        <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+              <input type="hidden" name="cmd" value="_cart">
+              <input type="hidden" name="upload" value="1">
+              <input type="hidden" name="business" value="tempuse110@gmail.com">
+              
+             <table width='100%'>
+                
+                <tr style="text-align: right"> 
+                    <th style="width: 170px">Product</th> 
+                    <th style="width: 170px">Quantity</th> 
+                    <th style="width: 170px">Price</th> 
+                </tr>
+                @for (int i=0;i<count;i++)
+                {
+                    ct++;
+                    <tr style="text-align: right"> 
+                      <input type="hidden" name="item_name_@ct" value="@c.prodName[i]">
+                      <input type="hidden" name="amount_@ct" value="@c.prodPrice[i]">
+                          <td class="product">@c.prodName[i]</td> 
+                          <td class="qt">@c.prodQuantity[i]</td> 
+                          <td class="price">@c.prodPrice[i]</td> 
+                     </tr> 
+                
+                  }         
+                <tr style="text-align: right"> 
+                    <td></td>
+                    <td style="font-weight: bold" >Total:</td> 
+                    <td> @total</td> 
+                </tr>  
+                <tr style="text-align: right"> 
+                <td></td>
+                <td></td> 
+                <td>
+                    <input type="image"
+                src="https://www.paypal.com/en_US/i/btn/btn_buynow_LG.gif"
+                border="0" name="submit" alt=""></td> 
+                </tr>   
+            </table>
+            
+       </form>
+    </td></tr>
+    
+</table>
+
+</div>

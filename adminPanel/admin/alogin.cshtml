@@ -1,0 +1,44 @@
+﻿@{
+    if(IsPost)
+    {
+        var uname = Request["un"];
+        var pass = Request["pwd"];
+        if(uname=="admin" && pass=="123")
+        {
+            Session["admin"]= "present";
+            Response.Redirect("~/adminPanel/pages/dashboard.cshtml");             
+        }
+        else
+        {
+            <p style="color: red;margin-left: 300px;margin-top:40px;font-size: 20px"> * Either invalid UserName Or Password</p>   
+        }
+    }
+}
+
+<div >
+    <div id="loginbox">
+         <div id="login-inner">
+              <form action="" method="post">
+		        <table border="0" style="border-spacing: 0px">
+		        <tr>
+			        <th>Username</th>
+			        <td><input type="text"  class="login-inp" name="un" value="@Request["un"]" /></td>
+		        </tr>
+		        <tr>
+			        <th>Password</th>
+			        <td><input type="password" onfocus="this.value=''" class="login-inp"  name="pwd" value="@Request["pwd"]"/></td>
+		        </tr>
+		        <tr>
+			        <th></th>
+			        <td></td>
+		        </tr>
+		        <tr>
+			        <th></th>
+			        <td><input type="submit" style="background-image: url(/adminPanel/images/submit.png);height: 40px;width: 100px;color: white;font-size: 16px;margin-top: 50px" value="Submit"/></td>
+		        </tr>
+		        </table>
+            </form>
+
+         </div>
+    </div>
+</div>

@@ -1,0 +1,19 @@
+﻿<html>
+    <head>
+        <title>EaxyShopping</title>
+        <link href="~/adminPanel/styles/screen.css" rel="stylesheet" type="text/css" />
+    </head>
+    <body >
+        <div style="background-color: green">
+              @RenderPage("~/adminPanel/shared/_header.cshtml")
+        </div>
+        <div>
+             @RenderBody()
+        </div>
+        <div>
+             @RenderPage("~/adminPanel/shared/_footer.cshtml")
+        </div>
+    </body>
+</html>
+
+

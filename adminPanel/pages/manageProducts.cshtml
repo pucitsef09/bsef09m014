@@ -1,0 +1,96 @@
+﻿@{ 
+   //manage products
+   if(Session["admin"]==null)
+   {
+       Response.Redirect("~/adminPanel/admin/alogin.cshtml");
+   }
+     var pageSize = 7; 
+     var totalPages = 0; 
+     var count = 0;
+     var page = UrlData[0].IsInt() ? UrlData[0].AsInt() : 1;
+     var offset = (page -1) * pageSize;
+ 
+     var db = Database.Open("edata");
+     var sql = "Select Count(*) From products";
+     count = (int)db.QueryValue(sql);
+     
+     totalPages = (int) Math.Ceiling((double)count/(double)pageSize) ;        
+     
+     
+    sql = "Select * from products Order by prodId OFFSET @0 ROWS FETCH NEXT @1 ROWS  ONLY";
+           var result = db.Query(sql, offset, pageSize);
+      
+         /*for(int k=0;k<count;k++)
+          {       <p>@pageCollection[k]</p>}*/
+ 
+        
+} 
+
+<!--Displaying all the products to admin-->
+<div id="main" style="height:450px ">
+    <div style="float: left;height:auto;width:auto;border: 0px solid green">
+    
+        <h1 style="font-family: Calibri;color: #303030 ">Products</h1>
+        <table border="1" style="margin-left:150px;margin-right: 10px;font-family: Verdana;font-size: 16px;border-spacing: 0px;border-style: outset">
+         <tr style="height: 37px">
+              <th style="background-image: url(/adminPanel/images/tHeader.jpg);color: white" >Product name</th>
+              <th style="background-image: url(/adminPanel/images/tHeader.jpg);color: white">Delete</th> 
+              <th style="background-image: url(/adminPanel/images/tHeader.jpg);color: white">Edit</th> 
+         </tr>
+       @foreach(var row in result){
+                 <tr style="height: 37px">
+                     <td style="width: 300px"><a href=@Href("~/adminPanel/pages/detailsPage.cshtml",@row.prodId)>@row.prodName</a></td>
+                     <td style="width: 120px;text-align: center"><a href=@Href("~/adminPanel/pages/products/deleteProduct.cshtml",@row.prodId)><img src="/adminPanel/images/icon1.gif" style="margin-left: 25px"/></a></td>
+                     <td style="width: 120px;text-align: center"><a href=@Href("~/adminPanel/pages/products/editProduct.cshtml",@row.prodId)><img src="/adminPanel/images/icon2.gif" style="margin-left: 25px"/></a></td>
+                   
+                 </tr>          
+                                 
+            }
+       </table>
+        <br/>
+        <br/>
+
+             <span style="margin-left: 200px"></span>
+           @for (var i = 1; i < totalPages + 1; i++){
+             <a href="/adminPanel/pages/manageProducts/@i" style="color: green">@i</a>
+        }   
+    
+
+    </div>
+    <div style="float: right">
+    <fieldset style="font-family: Calibri;color: black;font-size: 19px;margin: 30px 30px 0px 20px">
+        <legend>Manage Products</legend>
+     
+        <div id="d1" style="border:1px solid #BBBBBB;height: 150px;width: 150px;float: left;margin-right: 40px;margin-left: 20px">
+            <div>
+                <a href="~/adminPanel/pages/products/addProduct.cshtml"><img src="/adminPanel/images/add.jpg" height="130px" width="130px"/></a>
+            </div>
+            <div style="border:1px solid #BBBBBB;height: 19px">
+                Add Product
+            </div>
+        </div>
+       
+        <div id="d2" style="border:1px solid #BBBBBB;height: 150px;width: 150px;float: left;margin-right: 20px">
+            <div>
+                <a href="~/adminPanel/pages/products/deleteAllProducts.cshtml">
+                <img src="/adminPanel/images/delAll.jpg" height="130px" width="130px"/></a>
+            </div>
+            <div style="border:1px solid #BBBBBB;height: 19px">
+                Delete All
+            </div>
+        </div>
+
+        @for(int i=0;i<10;i++)
+        {
+            <br/>
+        }
+         
+          <p style="color: red"> * Note : Deleting Product will not delete its category. </p>
+           
+    </fieldset>
+        
+    </div>
+</div>
+
+
+

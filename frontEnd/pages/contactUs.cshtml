@@ -1,0 +1,54 @@
+﻿@{
+   Validation.RequireField("name","*Enter name"); 
+   Validation.RequireField("email","*Enter Email Id");
+   Validation.Add("email",Validator.Regex(@"^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$" ,"*Invalid Email Address"));
+    if(IsPost)
+    {
+        if(Validation.IsValid())
+        {
+             
+        }
+    }
+}
+<!--Contact us page-->
+<h3 style="color: green;font-family: Verdana;margin-left: 20px">Contact Info </h3>
+<pre style="font-family: Verdana;font-size: 17px">
+    Email Address : contact@easyshopping.com
+    Phone         : 111-2233-333
+    Fax           : 111-334-555
+</pre>
+
+<h3 style="color: #107ffa; font-family: Verdana;margin-left: 20px">Got Something to say? Please Drop us a line</h3>
+
+<p style="margin-left: 80px">
+We look foward to hear feedback from our clients.
+please let us know if we can be of any assistance and we'd be happy to help and any comments for our work so that we can improve our work.
+</p>
+
+<!--Adsking user to share his views-->
+<form action="" method="post" >
+    <table>
+        <tr>
+            <td style="text-align: right">Name :</td>
+            <td><input type="text" style="width: 354px" name="name"/></td>
+            <td><span style="font-family: Calibri; color: #218416; text-align: center">@Html.ValidationMessage("name")</span></td>
+        </tr>
+      <tr >
+            <td style="text-align: right">Email Id</td>
+            <td><input type="text" name="email" style="width:354px;"value ="@Request["email"]"/></td>
+            <td><span style="font-family: Calibri; color: #218416; text-align: center">@Html.ValidationMessage("email")</span> </td>
+      </tr>
+
+      <tr>
+           <td style="text-align: right">Comments</td>
+                <td><textarea name="comments" rows="3" cols="41" ></textarea></td>
+                <td></td>
+            </tr>
+
+      <tr>
+            <td></td>
+            <td><input type="submit" value="Sumbit Views" style="height: 35px;width: 160px;font-size: 16px"/></td>
+            <td></td>
+       </tr>
+    </table>
+ </form>

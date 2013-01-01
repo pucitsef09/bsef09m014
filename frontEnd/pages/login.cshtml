@@ -1,0 +1,62 @@
+﻿@{
+      //validaton for fields
+      Validation.RequireField("uname","*Username field cannot be empty");
+      Validation.RequireField("pass","*password cannot be empty");
+      Validation.Add("pass", Validator.StringLength(20));
+      
+      var un = Request["uname"];
+      var p = Request["pass"];
+      if (IsPost)
+      {
+          if(Validation.IsValid())
+          {
+                if(ModelState.IsValid)
+                {
+                    //if valid user then permit
+                    if(WebSecurity.Login(un,p))
+                    {
+                        Cart c= new Cart();
+                        Session["username"] = un;
+                        Session["obj"] = c;  
+                        Response.Redirect("~/frontEnd/pages/userPage.cshtml");  
+                       
+                    }
+                    else
+                    {
+                        <p style="color: red">* Either invalid user name Or password</p>
+                    }
+                    
+                }             
+          }
+
+      }
+}
+ 
+<div>
+   
+    <h2 style="margin-left: 30px;font-family: Calibri;color: black">Login Info</h2>
+    <h4 style="margin-left: 40px;color: green">You Should log in to buy adding thing + adding to cart </h4>
+    <form id="rgstrn" action="" method="post" style="height: auto;width:600px;border: 1px solid #BBBBBB;margin-left: 50px;margin-top: 30px">         
+        <table border="0" style="width:auto" style="margin-top: 50px;">
+            <tr style="height: 50px">
+                <td style="text-align: right;font-family:Calibri;font-size: 19px">User Name</td>
+                <td><input type="text" name="uname" style="height: 30px;width: 250px;margin-left: 10px"  value="@Request["uname"]"/></td>
+                <td style="width: auto"><span style="font-family: Calibri; color: #218416; text-align: center"> @Html.ValidationMessage("uname")</span> </td>
+            </tr>
+
+            <tr style="height: 50px">
+                <td style="text-align: right;font-family:Calibri;font-size: 19px">Password</td>
+                <td><input type="password" name="pass" style="height: 30px;width: 250px;margin-left: 10px" value="@Request["pass"]"/></td>
+                <td><span style="font-family: Calibri; color: #218416; text-align: center">@Html.ValidationMessage("pass")</span> </td>
+            </tr>
+
+            <tr style="height: 30px">
+                <td colspan="3"><input type="submit" value="login" style="height: 40px;width: 150px;margin-left: 150px;font-size: 24px"/>
+                </td>
+                
+            </tr>
+        </table>
+     </form>
+</div>
+
+

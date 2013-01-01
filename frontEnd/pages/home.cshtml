@@ -1,0 +1,78 @@
+﻿@{ 
+     //handling pagination
+     var pageSize = 12; 
+     var totalPages = 0; 
+     var count = 0;
+     var page = UrlData[0].IsInt() ? UrlData[0].AsInt() : 1;
+     var offset = (page -1) * pageSize;
+ 
+     var db = Database.Open("edata");
+     var sql = "Select Count(*) From products";
+     count = (int)db.QueryValue(sql);
+     
+     totalPages = (int) Math.Ceiling((double)count/(double)pageSize) ;        
+     sql = "Select * from products Order by prodId OFFSET @0 ROWS FETCH NEXT @1 ROWS  ONLY";
+           var result = db.Query(sql, offset, pageSize);
+      
+         /*for(int k=0;k<count;k++)
+          {       <p>@pageCollection[k]</p>}*/
+ 
+        
+} 
+
+
+<div >
+    <div id="d1" style="float: left;margin-left:7px; border: 0px solid #BBBBBB;width: 60%" >
+        <h3 style="color:#000;margin-left: 2% ;font-family: 'Comic Sans MS'; font-weight: bold">Products</h3>
+
+<!--Displaying all the itens from database-->    
+       @foreach(var row in result){
+           string sub = (@row.prodPath).Substring(1,(@row.prodPath).Length-1 );
+           <div  style="border:1px solid #BBBBBB;height: 150px;width: 150px;float: left;margin-left: 7px;margin-top: 10px;"> 
+                <a href="@sub"><img src="@sub" alt="no img" height="120" width="100%"/></a>
+                <div style="padding-top: 4px;padding-left: 12px;font-family: Calibri;font-size: 18px">  
+                    <span><a href=@Href("~/frontEnd/pages/productDetails.cshtml", @row.prodId)>@row.prodName</a></span>
+                    <span style="margin-left: 10px;color: green;font-size: 16px">Rs. @row.price </span>
+                </div>
+           </div>
+        }
+        <span style="margin-left: 200px;"></span>
+       @for (var i = 1; i < totalPages + 1; i++){
+         <a href="/frontEnd/pages/home/@i">@i</a>
+
+    }   
+    
+    </div>
+    <div id="d2" style="float: right;border: 1px solid #BBBBBB;height:540px;width: 38%">
+        
+        <div style="height: 35px">
+            <div style="float: left;margin-left: 100px;margin-top: 5px">
+                 <form action="~/frontEnd/pages/searchprod.cshtml" method="post" style="color: white;font-family: Verdana;font-size: 16px">
+
+                    @Html.TextBox("searchTerm")
+                    <input type="Submit" value="Search" />
+
+                </form>  
+            </div>
+
+            <div style="float: left;margin-top: 5px">
+                <a href="~/frontEnd/pages/logout.cshtml" style="margin-left: 10px">Logout</a>
+            </div>
+        </div>
+
+        <div id="slider" class="nivoSlider" style="margin-left: 0px;height: 150px;width: 100%;border: 1px solid #BBBBBB">
+        
+         <img src="~/frontEnd/images/welcome.jpg" alt="" width="90" height="90"  usemap="#Map" />
+        <img src="~/frontEnd/slider/b.jpg" alt="" width="90" height="90" usemap="#Map" />
+        <img src="~/frontEnd/slider/c.jpg" alt="" width="90" height="90"  usemap="#Map" />
+        <img src="~/frontEnd/slider/d.jpg" alt="" width="90" height="90"  usemap="#Map" />
+        <img src="~/frontEnd/slider/e.jpg" alt="" width="90" height="90"  usemap="#Map" />
+        
+        </div>
+        <h3 style="margin-top: 20px;margin-left: 50px">Welcome to EaxyShopping</h3>
+
+        <p style="margin-left: 100px">Every thing easily accessible</p>
+        <p style="margin-top: 20px"></p>
+        <a href="~/frontEnd/pages/userPage.cshtml" style="margin-left: 100px;font-family: Calibri;font-size: 20px;color: black;"><img src="~/frontEnd/images/myaccount.jpg" height="180px" width="180px"/></a>
+    </div >
+</div>

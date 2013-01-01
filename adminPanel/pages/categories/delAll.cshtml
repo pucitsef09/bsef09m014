@@ -1,0 +1,14 @@
+﻿@{
+    var action = UrlData[0];
+    if(action=="yes")
+    {
+         var db = Database.Open("edata");
+         var cat = db.Query("DELETE FROM products");
+         cat = db.Query("DELETE FROM categories");
+         Response.Redirect("~/adminPanel/pages/manageCategories.cshtml");    
+    }
+    else
+    {
+         Response.Redirect("~/adminPanel/pages/manageCategories.cshtml");    
+    }
+}

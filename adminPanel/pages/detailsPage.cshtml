@@ -1,0 +1,30 @@
+﻿@{
+    //displaying the details of product selected by admin
+      int quantity = 1;
+      var db = Database.Open("edata");
+      var ProductId = UrlData[0];
+   
+      var prod = db.QuerySingle("SELECT * FROM products WHERE prodId = @0", ProductId);
+      var prodId = prod.prodId;
+      var Name=prod.prodName;
+      var path=(prod.prodPath).Substring(1,(prod.prodPath).Length-1 );
+      var Price=prod.price;
+      var Desc=prod.description;
+      var quan = prod.quantity;
+      if(IsPost)
+      {
+         Response.Redirect("~/adminPanel/pages/manageProducts.cshtml");
+      }
+}
+
+<div style="height: 400px">
+    <div style="border: 0px solid #BBBBBB;margin-left: 200px;margin-top: 50px;font-family: Calibri;width: 300px;border-style: dashed">
+        <!--helper function for displaying the product details-->
+         @helpers.productDetails(Name,path,Price,Desc)
+    </div>
+    <div style="margin-left: 350px">
+        <form action="" method="post">
+            <input type="submit" value="Back" style="height: 40px;width: 150px;margin-top: 10px"/>
+        </form>
+    </div>
+</div>
